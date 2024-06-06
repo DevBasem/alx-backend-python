@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Module to define variables with annotations.
+"""
 
 
 a: int = 1
