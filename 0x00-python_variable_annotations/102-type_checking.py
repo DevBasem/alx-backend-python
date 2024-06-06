@@ -19,15 +19,14 @@ def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> List[int]:
         List[int]: A list containing each element of the input tuple
         repeated by the specified factor.
     """
-    zoomed_in = []  # Initialize an empty list
-    for item in lst:
-        zoomed_in.extend([item] * factor)
+    zoomed_in: List = [
+        item for item in lst
+        for i in range(factor)
+    ]
     return zoomed_in
 
+array = (12, 72, 91)
 
-if __name__ == "__main__":
-    array = (12, 72, 91)
+zoom_2x = zoom_array(array)
 
-    zoom_2x = zoom_array(array)
-
-    zoom_3x = zoom_array(array, 3)
+zoom_3x = zoom_array(array, 3)
