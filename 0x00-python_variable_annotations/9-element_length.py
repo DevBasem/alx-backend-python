@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-This module provides a function to calculate the length of elements in an iterable.
+This module provides a function to calculate the length of elements
+in an iterable.
 """
 
 from typing import Iterable, Sequence, Tuple, List
