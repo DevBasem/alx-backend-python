@@ -1,38 +1,24 @@
 #!/usr/bin/env python3
 """
-Async basics
+Module for basic asynchronous syntax.
 """
 
+import asyncio
 import random
 
-try:
-    import asyncio
-except ImportError:
-    # For Python 2.7.12 compatibility
-    import trollius as asyncio
 
-@asyncio.coroutine
-def wait_random(max_delay=10):
+async def wait_random(max_delay: int = 10) -> float:
     """
     Asynchronous coroutine that waits for a random delay
-    between 0 and max_delay seconds and eventually returns it.
+    between 0 and max_delay seconds (inclusive) and eventually
+    returns it.
 
     Args:
-        max_delay (int): Maximum delay (default 10)
+        max_delay (int): Maximum delay in seconds (default 10).
 
     Returns:
-        float: Random delay
+        float: Random delay.
     """
     delay = random.uniform(0, max_delay)
-    yield from asyncio.sleep(delay)
+    await asyncio.sleep(delay)
     return delay
-
-def run(coroutine):
-    if hasattr(asyncio, "run"):
-        return asyncio.run(coroutine)
-    else:
-        loop = asyncio.get_event_loop()
-        try:
-            return loop.run_until_complete(coroutine)
-        finally:
-            loop.close()
