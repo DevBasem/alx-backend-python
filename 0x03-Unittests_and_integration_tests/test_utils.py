@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Unit tests for utils.access_nested_map and utils.get_json functions.
+Unit tests for utils.access_nested_map, utils.get_json, and utils.memoize functions.
 """
 
 import unittest
+from typing import Dict, Tuple, Union
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -36,7 +37,7 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
-        
+
         actual_key = str(cm.exception)
         self.assertEqual(actual_key, expected_key)
 
@@ -68,6 +69,30 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
             self.assertEqual(result, test_payload)
 
+
+class TestMemoize(unittest.TestCase):
+    """
+    Tests for the memoize decorator.
+    """
+
+    def test_memoize(self) -> None:
+        """Tests `memoize`'s output."""
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+        with patch.object(
+                TestClass,
+                "a_method",
+                return_value=lambda: 42,
+                ) as memo_fxn:
+            test_class = TestClass()
+            self.assertEqual(test_class.a_property(), 42)
+            self.assertEqual(test_class.a_property(), 42)
+            memo_fxn.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
